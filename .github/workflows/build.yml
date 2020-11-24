@@ -33,12 +33,21 @@ jobs:
       with:
         name: functions
         path: functions
+        retention-days: 3
 
     - name: Store public dir
       uses: actions/upload-artifact@v2
       with:
         name: _site
         path: _site
+        retention-days: 3
+
+    - name: Store node_modules
+      uses: actions/upload-artifact@v2
+      with:
+        name: node_modules
+        path: node_modules
+        retention-days: 1
 
     # - name: Deploy
     #   run: ./deploy.sh
