@@ -1,0 +1,28 @@
+name: Build and test
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Build
+      run: make
+      env:
+        ANALYTICS_ENABLED: ${{ secrets.ANALYTICS_ENABLED }}
+        FATHOM_SITE_ID: ${{ secrets.FATHOM_SITE_ID }}
+        MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
+        SERVER_PREFIX: ${{ secrets.SERVER_PREFIX }}
+    - name: Test
+      run: make test
