@@ -14,10 +14,10 @@ const delay = (ms) => {
     })
 }
 
-test('HTML content', () => {
-    expect(readFile('_site/index.html')).toMatch(/<html.*Tokod/s)
-    expect(readFile('_site/mi-ez.html')).toMatch(/<html.*Lencse/s)
-})
+// test('HTML content', () => {
+//     expect(readFile('_site/index.html')).toMatch(/<html.*Tokod/s)
+//     expect(readFile('_site/mi-ez.html')).toMatch(/<html.*Lencse/s)
+// })
 
 test('Static files', () => {
     expect(fileSize('favicon.ico')).toBeGreaterThan(0)

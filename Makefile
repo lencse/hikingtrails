@@ -6,7 +6,8 @@ BIN=node_modules/.bin
 default: dist build _data/data.json functions _site
 
 _site: _includes/analytics.html
-	bundle exec jekyll build
+	mkdir -p _site
+	echo "Here be dragons" > _site/index.html
 
 _includes/analytics.html: build
 	node bin/write-analytics.js
