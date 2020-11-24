@@ -1,6 +1,8 @@
 name: Build and test
 
-on: [push]
+on:
+  - push
+  - pull_request
 
 jobs:
   build:
@@ -15,8 +17,6 @@ jobs:
       with:
         node-version: 12.x
 
-    - run: node -v
-
     - name: Build
       run: make
       env:
@@ -27,3 +27,9 @@ jobs:
 
     - name: Test
       run: make test
+
+    - name: Deploy
+      run: ./deploy.sh
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}

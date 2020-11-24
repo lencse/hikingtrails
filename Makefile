@@ -7,7 +7,7 @@ default: dist build _data/data.json functions _site
 
 _site: _includes/analytics.html
 	mkdir -p _site
-	echo "Here be dragons" > _site/index.html
+	echo "Here be dragons." > _site/index.html
 
 _includes/analytics.html: build
 	node bin/write-analytics.js
