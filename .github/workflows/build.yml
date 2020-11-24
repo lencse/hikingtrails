@@ -28,8 +28,20 @@ jobs:
     - name: Test
       run: make test
 
-    - name: Deploy
-      run: ./deploy.sh
-      env:
-        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+    - name: Store functions
+      uses: actions/upload-artifact@v2
+      with:
+        name: functions
+        path: functions
+
+    - name: Store public dir
+      uses: actions/upload-artifact@v2
+      with:
+        name: _site
+        path: _site
+
+    # - name: Deploy
+    #   run: ./deploy.sh
+    #   env:
+    #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+    #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
