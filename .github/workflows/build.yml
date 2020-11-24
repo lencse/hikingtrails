@@ -15,10 +15,10 @@ jobs:
       with:
         node-version: 12.x
 
-    - name: Use Ruby 2.6.x
+    - name: Use Ruby 2.6.3
       uses: actions/setup-ruby@v1
       with:
-        ruby-version: 2.6.x
+        ruby-version: 2.6.3
 
     - run: node -v
 
