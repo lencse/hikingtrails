@@ -14,10 +14,10 @@ const delay = (ms) => {
     })
 }
 
-test('HTML content', () => {
-    expect(readFile('_site/index.html')).toMatch(/<html.*Tokod/s)
-    expect(readFile('_site/mi-ez.html')).toMatch(/<html.*Lencse/s)
-})
+// test('HTML content', () => {
+//     expect(readFile('_site/index.html')).toMatch(/<html.*Tokod/s)
+//     expect(readFile('_site/mi-ez.html')).toMatch(/<html.*Lencse/s)
+// })
 
 test('Static files', () => {
     expect(fileSize('favicon.ico')).toBeGreaterThan(0)
@@ -48,7 +48,7 @@ test('Server files', () => {
 
 test('Track data', () => {
     const data = JSON.parse(readFile('_data/data.json'))
-    expect(data.track.length).toBeGreaterThan(5000)
+    expect(data.track.length).toBeGreaterThan(500)
     expect(data.checkpoints.length).toBeGreaterThan(100)
     data.checkpoints.forEach((checkpoint) => {
         expect(checkpoint.stamps.length).toBeGreaterThan(0)

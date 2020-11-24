@@ -1,6 +1,5 @@
 [build]
     publish = "_site/"
-    command = "make && make test"
     functions = "functions/"
 
 [[redirects]]

@@ -179,7 +179,7 @@ const getCheckpoints = (stamps: StampWithPathNodes[]): Checkpoint[] => {
 }
 
 const download = async () => {
-    const track = (await getTrack()) //.filter((v, i) => i%200 === 0)
+    const track = (await getTrack()) .filter((v, i) => i%400 === 0)
     console.info(track.length, 'track nodes downloaded from kektura.hu')
     const stamps = await getStamps(track)
     const checkpoints = getCheckpoints(stamps).sort((c1, c2) => c1.firstNearNodeIdx - c2.firstNearNodeIdx)
