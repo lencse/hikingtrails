@@ -15,10 +15,16 @@ jobs:
       with:
         node-version: 12.x
 
-    - name: UseRuby 2.6.x
+    - name: Use Ruby 2.6.x
       uses: actions/setup-ruby@v1
       with:
         ruby-version: 2.6.x
+
+    - run: node -v
+
+    - run: ruby -v
+
+    - run: bundle install
 
     - name: Build
       run: make
