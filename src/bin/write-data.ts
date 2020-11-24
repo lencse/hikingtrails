@@ -2,9 +2,9 @@ import axios from 'axios'
 import { load } from 'cheerio'
 import { parseString } from 'xml2js'
 import { Coordinate, Stamp, StampWithPathNodes, Data, Checkpoint } from '../types'
-import { getDistance, convertSpeed } from 'geolib'
+import { getDistance } from 'geolib'
 import { writeFileSync } from 'fs'
-import { resolve } from 'path'
+import { resolve as pathResolve } from 'path'
 
 const httpGet = async (url: string): Promise<string> => {
     const res = await axios.get(url)
@@ -187,7 +187,7 @@ const download = async () => {
         checkpoints,
         track
     }
-    writeFileSync(resolve(process.cwd(), '_data/data.json'), JSON.stringify(data))
+    writeFileSync(pathResolve(process.cwd(), '_data/data.json'), JSON.stringify(data))
 }
 
 download()

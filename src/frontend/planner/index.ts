@@ -1,6 +1,6 @@
 import * as leaflet from 'leaflet'
 import { map as config } from '../../config'
-import { Coordinate, Part, Stamp } from '../../types'
+import { Part } from '../../types'
 import ready from '../ready'
 import { decompress } from 'lzutf8'
 

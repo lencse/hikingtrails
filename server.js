@@ -1,11 +1,11 @@
 require('dotenv').config()
 
 const Koa = require('koa')
-const static = require('koa-static')
+const serveStatic = require('koa-static')
 
 const app = new Koa()
 
-app.use(static('.'))
+app.use(serveStatic('.'))
 
 app.use(async(ctx) => {
     for (const func of [
@@ -24,7 +24,7 @@ app.use(async(ctx) => {
             const resp = await require(`./${func}`).handler(event)
             ctx.res.statusCode = resp.statusCode
             ctx.body = resp.body
-            for (key in resp.headers) {
+            for (const key in resp.headers) {
                 ctx.set(key, resp.headers[key])
             }
             return
