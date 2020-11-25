@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-ls -la
+if [ "$GITHUB_EVENT_NAME" -eq "push" ]
+then
+    echo PROD
+fi
 
-echo GITHUB_ACTION=$GITHUB_ACTION
-echo GITHUB_ACTOR=$GITHUB_ACTOR
-echo GITHUB_REPOSITORY=$GITHUB_REPOSITORY
-echo GITHUB_EVENT_NAME=$GITHUB_EVENT_NAME
-echo GITHUB_SHA=$GITHUB_SHA
+if [ "$GITHUB_EVENT_NAME" -eq "pull_request" ]
+then
+    echo PREVIEW
+fi
