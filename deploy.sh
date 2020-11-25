@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-if [ "$GITHUB_EVENT_NAME" -eq "push" ]
+if [ "$GITHUB_EVENT_NAME" = "push" ]
 then
-    echo PROD
+    node_modules/.bin/netlify deploy --prod
 fi
 
-if [ "$GITHUB_EVENT_NAME" -eq "pull_request" ]
+if [ "$GITHUB_EVENT_NAME" = "pull_request" ]
 then
-    echo PREVIEW
+    node_modules/.bin/netlify deploy
 fi
