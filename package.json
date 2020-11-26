@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "node": "^12"
+    "node": "^14"
   },
   "devDependencies": {
     "@netlify/zip-it-and-ship-it": "^0.3.1",
