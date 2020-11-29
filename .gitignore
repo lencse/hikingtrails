@@ -15,3 +15,5 @@ _site
 vendor
 /_includes/analytics.html
 /dist
+/.next
+/out

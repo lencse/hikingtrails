@@ -3,11 +3,11 @@
 
 BIN=node_modules/.bin
 
-default: dist build _data/data.json functions _site
+default: build _data/data.json functions out
 
-_site: _includes/analytics.html
-	mkdir -p _site
-	echo "Here be dragons" > _site/index.html
+out: _includes/analytics.html
+	$(BIN)/next build
+	$(BIN)/next export
 
 _includes/analytics.html: build
 	node bin/write-analytics.js
@@ -22,19 +22,22 @@ node_modules: package.json yarn.lock
 	yarn && touch node_modules
 
 build: src node_modules
-	make compile && touch build
+	make compile
 
 _data/data.json: build
 	node bin/write-data.js
 
 watch: node_modules
-	make clean && make build && ( \
-		bundle exec jekyll serve --watch & \
-		$(BIN)/tsc -p . --outDir ./build --watch --pretty & \
-		$(BIN)/webpack-dev-server & \
-		$(BIN)/nodemon bin/write-analytics.js & \
-		$(BIN)/nodemon server.js \
-	)
+	make build
+	$(BIN)/next dev & \
+		$(BIN)/tsc -p . --outDir ./build --watch --pretty
+	# make clean && make build && ( \
+	# 	bundle exec jekyll serve --watch & \
+	# 	$(BIN)/tsc -p . --outDir ./build --watch --pretty & \
+	# 	$(BIN)/webpack-dev-server & \
+	# 	$(BIN)/nodemon bin/write-analytics.js & \
+	# 	$(BIN)/nodemon server.js \
+	# )
 
 watch_data:
 	make watch_ts & $(BIN)/nodemon bin/write-data.js
