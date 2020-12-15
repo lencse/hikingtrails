@@ -5,18 +5,15 @@ BIN=node_modules/.bin
 
 default: build _data/data.json functions out
 
-out: _includes/analytics.html
+out:
 	$(BIN)/next build
 	$(BIN)/next export
-
-_includes/analytics.html: build
-	node bin/write-analytics.js
 
 dist: build src ejs-templates _data/data.json
 	$(BIN)/webpack
 
 clean:
-	rm -rf dist build functions .tmp _includes/analytics.html _site
+	rm -rf dist build functions .tmp _includes/analytics.html out
 
 node_modules: package.json yarn.lock
 	yarn && touch node_modules
@@ -28,23 +25,17 @@ _data/data.json: build
 	node bin/write-data.js
 
 watch: node_modules
-	make build
-	$(BIN)/next dev & \
-		$(BIN)/tsc -p . --outDir ./build --watch --pretty
-	# make clean && make build && ( \
-	# 	bundle exec jekyll serve --watch & \
-	# 	$(BIN)/tsc -p . --outDir ./build --watch --pretty & \
-	# 	$(BIN)/webpack-dev-server & \
-	# 	$(BIN)/nodemon bin/write-analytics.js & \
-	# 	$(BIN)/nodemon server.js \
-	# )
+	make build && ( \
+		$(BIN)/next dev & \
+		make watch_ts \
+	)
 
 watch_data:
 	make watch_ts & $(BIN)/nodemon bin/write-data.js
 
 verify: lint test
 
-watch_ts:
+watch_ts: node_modules
 	$(BIN)/tsc -p . --outDir ./build --watch --pretty
 
 lint: node_modules
@@ -84,6 +75,5 @@ functions: build _data/data.json download.js
 	cp download-map.js .tmp/functions/download-map
 	node build-functions.js
 
-test:
-	echo Skipping test
-	# SERVER_PORT=4571 $(BIN)/jest
+test: node_modules
+	$(BIN)/jest

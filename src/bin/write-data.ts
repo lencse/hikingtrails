@@ -117,8 +117,8 @@ const getStamps = async (trackNodes): Promise<StampWithPathNodes[]> => {
     const stamps = await stampsFromGpx(gpx)
     console.info(stamps.length, 'stamps data downloaded from kektura.hu')
     return stamps.map((stamp, stampIdx) => {
-        var minDistance = Infinity
-        var nearestIdx = -1
+        let minDistance = Infinity
+        let nearestIdx = -1
         trackNodes.forEach((node, idx) => {
             const distance = distanceInMeters(node, stamp.coordinate)
             if (distance < minDistance) {
@@ -172,7 +172,7 @@ const getCheckpoints = (stamps: StampWithPathNodes[]): Checkpoint[] => {
         })
     })
     const result = []
-    for (let i of ch.values()) {
+    for (const i of ch.values()) {
         result.push(i)
     }
     return result
