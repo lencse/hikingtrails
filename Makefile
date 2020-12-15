@@ -1,7 +1,8 @@
-.PHONY: test dev watch test lint test_ts test test_compiled
+.PHONY: dev watch test lint test_ts test test_compiled
 .PHONY: lint_fix watch_test verify compile clean watch_ts watch_data
 
-BIN=node_modules/.bin
+VENDOR=node_modules
+BIN=$(VENDOR)/.bin
 
 default: build _data/data.json functions out
 
@@ -15,16 +16,16 @@ dist: build src ejs-templates _data/data.json
 clean:
 	rm -rf dist build functions .tmp _includes/analytics.html out
 
-node_modules: package.json yarn.lock
+$(VENDOR): package.json yarn.lock
 	yarn && touch node_modules
 
-build: src node_modules
+build: src $(VENDOR)
 	make compile
 
 _data/data.json: build
 	node bin/write-data.js
 
-watch: node_modules
+watch: $(VENDOR)
 	make build && ( \
 		$(BIN)/next dev & \
 		make watch_ts \
@@ -35,19 +36,16 @@ watch_data:
 
 verify: lint test
 
-watch_ts: node_modules
+watch_ts: $(VENDOR)
 	$(BIN)/tsc -p . --outDir ./build --watch --pretty
 
-lint: node_modules
+lint: $(VENDOR)
 	$(BIN)/tslint -c tslint.json -p .
 
-lint_fix: node_modules
+lint_fix: $(VENDOR)
 	$(BIN)/tslint -c tslint.json --fix -p .
 
 dev: lint_fix verify
-
-watch_test: node_modules
-	$(BIN)/jest --config jest.config.js --watch
 
 compile:
 	$(BIN)/tsc -p . --outDir ./build
@@ -75,5 +73,13 @@ functions: build _data/data.json download.js
 	cp download-map.js .tmp/functions/download-map
 	node build-functions.js
 
-test: node_modules
-	$(BIN)/jest
+test_ts: $(VENDOR)
+	$(BIN)/jest --verbose
+
+test: test_ts test_compiled
+
+watch_test: $(VENDOR)
+	$(BIN)/jest --config jest.config.dev.js --watch
+
+test_compiled: build $(VENDOR)
+	$(BIN)/jest --config jest.config.compiled.js

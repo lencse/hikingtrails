@@ -29,8 +29,8 @@ jobs:
         MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
         SERVER_PREFIX: ${{ secrets.SERVER_PREFIX }}
 
-    - name: Test
-      run: make test
+    - name: Verify
+      run: make verify
 
     - name: Deploy
       run: ./deploy.sh

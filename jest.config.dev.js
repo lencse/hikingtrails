@@ -3,8 +3,5 @@ module.exports = {
     testEnvironment: 'node',
     testMatch: [
         '**/src/test/**/*.ts?(x)'
-    ],
-    coverageDirectory: 'logs/jest',
-    collectCoverage: true,
-//    testResultsProcessor: 'jest-sonar-reporter'
+    ]
 }
