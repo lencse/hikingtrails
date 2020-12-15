@@ -1,4 +1,4 @@
-name: Build and test
+name: Build, test and deploy
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  build:
+  default:
 
     runs-on: ubuntu-latest
 
