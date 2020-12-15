@@ -47,7 +47,7 @@ lint_fix: $(VENDOR)
 
 dev: lint_fix verify
 
-compile:
+compile: src node_modules
 	$(BIN)/tsc -p . --outDir ./build
 
 functions: build _data/data.json download.js
