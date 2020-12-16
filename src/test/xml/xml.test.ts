@@ -1,10 +1,11 @@
 import { parseXml } from '../../xml'
-import { sampleXml } from './xml-sample'
+import { resolve } from 'path'
+import { readFileSync } from 'fs'
 
 describe('XML', () => {
 
     it('Parse XML into JSON', async () => {
-        const xml = sampleXml
+        const xml = readFileSync(resolve(process.cwd(), 'src/test/xml/sample.xml')).toString()
         const result = await parseXml(xml)
         expect(result.gpx.$.xmlns).toBe('http://www.topografix.com/GPX/1/1')
         expect(result.gpx.wpt[10].name[0]).toBe('Badacsonytördemic')
