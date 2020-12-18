@@ -19,7 +19,7 @@
         "noEmit": false,
         "esModuleInterop": true,
         "resolveJsonModule": true,
-        "isolatedModules": false,
+        "isolatedModules": true,
         "jsx": "preserve"
     },
     "lib": [

@@ -2,6 +2,6 @@ module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
     testMatch: [
-        '**/src/test/**/*.test.ts?(x)'
+        `${__dirname}/src/test/**/*.test.ts`
     ]
 }
