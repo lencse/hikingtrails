@@ -1,4 +1,4 @@
-.PHONY: dev watch test lint test_ts test test_compiled
+.PHONY: dev watch test lint test_ts test test_compiled coveralls
 .PHONY: lint_fix watch_test verify compile clean watch_ts watch_data
 
 VENDOR=node_modules
@@ -83,3 +83,6 @@ watch_test: $(VENDOR)
 
 test_compiled: build $(VENDOR)
 	$(BIN)/jest --config jest.config.compiled.js
+
+coveralls:
+	$(BIN)/coveralls < logs/jest/lcov.info

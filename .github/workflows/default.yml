@@ -39,7 +39,7 @@ jobs:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
     - name: Send coverage report
-      run: coveralls < logs/jest/lcov.info
+      run: make coveralls
       env:
         COVERALLS_SERVICE_NAME: github-actions
         COVERALLS_REPO_TOKEN: "${{ secrets.COVERALLS_REPO_TOKEN }}"
