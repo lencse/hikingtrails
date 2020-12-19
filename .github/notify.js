@@ -6,6 +6,7 @@ const { readFileSync } = require('fs')
 
 const slackToken = process.env.SLACK_BOT_TOKEN
 const slackChannel = process.env.SLACK_CHANNEL
+const slackMessageId = process.env.SLACK_MESSAGE_ID
 
 const color = process.env.ACTION_COLOR
 const status = process.env.ACTION_STATUS
@@ -15,7 +16,6 @@ const sha = process.env.GITHUB_SHA
 const workflow = process.env.GITHUB_WORKFLOW
 const branch = process.env.GITHUB_BRANCH_NAME
 const eventName = process.env.GITHUB_EVENT_NAME
-const actionId = process.env.GITHUB_ACTION
 
 const fileContent = (relativePath) =>
     readFileSync(
@@ -44,7 +44,7 @@ const getActions = {
             {
                 type: 'button',
                 text: 'Check build log',
-                url: `https://github.com/${repo}/runs/${actionId}/checks`
+                url: `<https://github.com/${repo}/commit/${sha}/checks`
             }
         ]
     },
@@ -52,8 +52,11 @@ const getActions = {
 
 const main = async () => {
     const client = new WebClient(slackToken)
-    const res = await client.chat.postMessage({
+    const fn = 'started' === status ? client.chat.postMessage : client.chat.update
+    const ts = 'started' === status ? null : slackMessageId
+    const res = await fn({
         channel: slackChannel,
+        ts,
         attachments: [
             {
                 color,
