@@ -104,7 +104,9 @@ const main = async () => {
             },
         ],
     })
-    process.stdout.write(`${res.ts}\n`)
+    if ('STARTED' === status) {
+        process.stdout.write(`${res.ts}\n`)
+    }
 }
 
 main()
