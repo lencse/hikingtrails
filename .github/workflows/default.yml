@@ -32,6 +32,9 @@ jobs:
       with:
         node-version: 14.x
 
+    - name: Install dependencies
+      run: make node_modules
+
     - name: Notify slack - starting
       id: slack
       run: echo "##[set-output name=slack_message_id;]$(.github/notify.js)"
