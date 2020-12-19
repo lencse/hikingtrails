@@ -16,21 +16,30 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Notify slack - starting
-    #   if: success()
-      id: slack
-      env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      uses: voxmedia/github-action-slack-notify-build@v1
-      with:
-        channel: github-actions
-        status: STARTING
-        color: warning
+    # - name: Notify slack - starting
+    # #   if: success()
+    #   id: slack
+    #   env:
+    #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    #   uses: voxmedia/github-action-slack-notify-build@v1
+    #   with:
+    #     channel: github-actions
+    #     status: STARTING
+    #     color: warning
 
     - name: Use Node.js 14.x
       uses: actions/setup-node@v1
       with:
         node-version: 14.x
+
+    - name: Notify slack - starting
+      id: slack
+      run: echo "##[set-output name=slack_message_id;]$(.github/notify.js)"
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        SLACK_CHANNEL: github-actions
+        ACTION_COLOR: warning
+        ACTION_STATUS: STARTED
 
     - name: Extract branch name
       shell: bash
@@ -68,26 +77,29 @@ jobs:
         COVERALLS_GIT_BRANCH: ${{ steps.extract_branch.outputs.branch }}
 
     - name: Send deployment notification to slack
-      run: cat logs/deploy.log
-
-    - name: Notify slack - success
-      if: success()
+      run: echo $SLACK_MESSAGE_ID
       env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      uses: voxmedia/github-action-slack-notify-build@v1
-      with:
-        message_id: ${{ steps.slack.outputs.message_id }}
-        channel: github-actions
-        status: SUCCESS
-        color: good
+        GITHUB_BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
+        SLACK_MESSAGE_ID: ${{ steps.slack.outputs.slack_message_id }}
 
-    - name: Notify slack - failure
-      if: failure()
-      env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      uses: voxmedia/github-action-slack-notify-build@v1
-      with:
-        message_id: ${{ steps.slack.outputs.message_id }}
-        channel: github-actions
-        status: FAILED
-        color: danger
+    # - name: Notify slack - success
+    #   if: success()
+    #   env:
+    #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    #   uses: voxmedia/github-action-slack-notify-build@v1
+    #   with:
+    #     message_id: ${{ steps.slack.outputs.message_id }}
+    #     channel: github-actions
+    #     status: SUCCESS
+    #     color: good
+
+    # - name: Notify slack - failure
+    #   if: failure()
+    #   env:
+    #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    #   uses: voxmedia/github-action-slack-notify-build@v1
+    #   with:
+    #     message_id: ${{ steps.slack.outputs.message_id }}
+    #     channel: github-actions
+    #     status: FAILED
+    #     color: danger

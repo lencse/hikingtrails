@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@netlify/zip-it-and-ship-it": "^0.3.1",
+    "@slack/web-api": "^5.14.0",
     "@types/cheerio": "^0.22.18",
     "@types/ejs": "^3.0.3",
     "@types/jest": "^25.2.1",
