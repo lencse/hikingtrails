@@ -28,7 +28,7 @@ const getActions = {
         {
             type: 'button',
             text: 'Check build log',
-            url: `https://github.com/${repo}/runs/${sha}/checks`
+            url: `https://github.com/${repo}/commit/${sha}/checks`
         }
     ],
     'SUCCESS': () => {
@@ -44,8 +44,8 @@ const getActions = {
             {
                 type: 'button',
                 text: 'Check build log',
-                url: `<https://github.com/${repo}/commit/${sha}/checks`
-            }
+                url: `https://github.com/${repo}/commit/${sha}/checks`
+            },
         ]
     },
 }
