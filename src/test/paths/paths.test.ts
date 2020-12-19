@@ -1,4 +1,4 @@
-import { distanceInCentimeters } from "../../map/paths"
+import { distanceInCentimeters } from '../../map/paths'
 
 describe('Path', () => {
 
