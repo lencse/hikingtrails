@@ -16,7 +16,26 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - run: echo $GITHUB_RUN_ID
+    - run: |
+        echo "CI = $CI " \
+        echo "GITHUB_WORKFLOW = $GITHUB_WORKFLOW " \
+        echo "GITHUB_RUN_ID = $GITHUB_RUN_ID " \
+        echo "GITHUB_RUN_NUMBER = $GITHUB_RUN_NUMBER " \
+        echo "GITHUB_ACTION = $GITHUB_ACTION " \
+        echo "GITHUB_ACTIONS = $GITHUB_ACTIONS " \
+        echo "GITHUB_ACTOR = $GITHUB_ACTOR " \
+        echo "GITHUB_REPOSITORY = $GITHUB_REPOSITORY " \
+        echo "GITHUB_EVENT_NAME = $GITHUB_EVENT_NAME " \
+        echo "GITHUB_EVENT_PATH = $GITHUB_EVENT_PATH " \
+        echo "GITHUB_WORKSPACE = $GITHUB_WORKSPACE " \
+        echo "GITHUB_SHA = $GITHUB_SHA " \
+        echo "GITHUB_REF = $GITHUB_REF " \
+        echo "GITHUB_HEAD_REF = $GITHUB_HEAD_REF " \
+        echo "GITHUB_BASE_REF = $GITHUB_BASE_REF " \
+        echo "GITHUB_SERVER_URL = $GITHUB_SERVER_URL " \
+        echo "GITHUB_API_URL = $GITHUB_API_URL " \
+        echo "GITHUB_GRAPHQL_URL = $GITHUB_GRAPHQL_URL "
+
 
     - uses: actions/cache@v2
       id: node_modules-cache
@@ -92,15 +111,3 @@ jobs:
         ACTION_STATUS: FAILED
         SLACK_MESSAGE_ID: ${{ steps.slack.outputs.slack_message_id }}
         GITHUB_BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
-
-
-    # - name: Notify slack - failure
-    #   if: failure()
-    #   env:
-    #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-    #   uses: voxmedia/github-action-slack-notify-build@v1
-    #   with:
-    #     message_id: ${{ steps.slack.outputs.message_id }}
-    #     channel: github-actions
-    #     status: FAILED
-    #     color: danger
