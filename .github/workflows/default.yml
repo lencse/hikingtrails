@@ -22,6 +22,11 @@ jobs:
         path: node_modules
         key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
 
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+
     # - name: Notify slack - starting
     # #   if: success()
     #   id: slack
@@ -49,11 +54,6 @@ jobs:
         SLACK_CHANNEL: github-actions
         ACTION_COLOR: warning
         ACTION_STATUS: STARTED
-
-    - name: Extract branch name
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      id: extract_branch
 
     - name: Build
       run: make
@@ -85,16 +85,24 @@ jobs:
         GITHUB_BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
         SLACK_MESSAGE_ID: ${{ steps.slack.outputs.slack_message_id }}
 
-    # - name: Notify slack - success
-    #   if: success()
-    #   env:
-    #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-    #   uses: voxmedia/github-action-slack-notify-build@v1
-    #   with:
-    #     message_id: ${{ steps.slack.outputs.message_id }}
-    #     channel: github-actions
-    #     status: SUCCESS
-    #     color: good
+    - name: Notify slack - success
+      if: success()
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        SLACK_CHANNEL: github-actions
+        ACTION_COLOR: good
+        ACTION_STATUS: SUCCESS
+        SLACK_MESSAGE_ID: ${{ steps.slack.outputs.slack_message_id }}
+
+    - name: Notify slack - failure
+      if: failure()
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        SLACK_CHANNEL: github-actions
+        ACTION_COLOR: danger
+        ACTION_STATUS: FAILED
+        SLACK_MESSAGE_ID: ${{ steps.slack.outputs.slack_message_id }}
+
 
     # - name: Notify slack - failure
     #   if: failure()
