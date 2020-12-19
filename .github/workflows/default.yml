@@ -79,14 +79,9 @@ jobs:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         COVERALLS_GIT_BRANCH: ${{ steps.extract_branch.outputs.branch }}
 
-    - name: Send deployment notification to slack
-      run: echo $SLACK_MESSAGE_ID
-      env:
-        GITHUB_BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
-        SLACK_MESSAGE_ID: ${{ steps.slack.outputs.slack_message_id }}
-
     - name: Notify slack - success
       if: success()
+      run: .github/notify.js
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         SLACK_CHANNEL: github-actions
@@ -96,6 +91,7 @@ jobs:
 
     - name: Notify slack - failure
       if: failure()
+      run: .github/notify.js
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         SLACK_CHANNEL: github-actions
