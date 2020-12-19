@@ -11,12 +11,12 @@ describe('XML', () => {
     })
 
     it('XML errors', async () => {
-        const xml = 'Invalid XML'
+        const xml = '<xml>Invalid XML'
         try {
             await parseXml(xml)
             fail('Exception not thrown')
         } catch (e) {
-            expect(e).toBeTruthy()
+            expect(e).toBeDefined()
         }
     })
 

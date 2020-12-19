@@ -55,3 +55,8 @@ jobs:
         COVERALLS_SERVICE_NAME: github-actions
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         COVERALLS_GIT_BRANCH: ${{ steps.extract_branch.outputs.branch }}
+
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
