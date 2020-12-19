@@ -52,8 +52,8 @@ const getActions = {
 
 const main = async () => {
     const client = new WebClient(slackToken)
-    const fn = 'started' === status ? client.chat.postMessage : client.chat.update
-    const ts = 'started' === status ? null : slackMessageId
+    const fn = 'STARTED' === status ? client.chat.postMessage : client.chat.update
+    const ts = 'STARTED' === status ? null : slackMessageId
     const res = await fn({
         channel: slackChannel,
         ts,
