@@ -18,18 +18,6 @@ jobs:
 
     - run: echo $GITHUB_RUN_ID
 
-    - uses: 8BitJonny/gh-get-current-pr@v1
-      id: PR
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        filterOutClosed: true
-
-    - run: echo "Your PR is ${prNumber} and its JSON is ${prJSON}"
-      if: success() && steps.PR.outputs.number
-      env:
-        prNumber: ${{ steps.PR.outputs.number }}
-        prJSON: ${{ steps.PR.outputs.pr }}
-
     - uses: actions/cache@v2
       id: node_modules-cache
       with:
@@ -40,17 +28,6 @@ jobs:
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
-
-    # - name: Notify slack - starting
-    # #   if: success()
-    #   id: slack
-    #   env:
-    #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-    #   uses: voxmedia/github-action-slack-notify-build@v1
-    #   with:
-    #     channel: github-actions
-    #     status: STARTING
-    #     color: warning
 
     - name: Use Node.js 14.x
       uses: actions/setup-node@v1

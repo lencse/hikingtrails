@@ -84,7 +84,7 @@ const main = async () => {
                     'pull_request' === eventName
                         ? {
                             title: 'Pull Request',
-                            value: `<${payload.pull_request.html_url} | ${payload.pull_request.title}>`,
+                            value: `<https://github.com/${repo}/commit/${sha} | ${branch}>`,
                             short: true,
                         }
                         : {
