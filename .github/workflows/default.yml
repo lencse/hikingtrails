@@ -54,6 +54,7 @@ jobs:
         SLACK_CHANNEL: github-actions
         ACTION_COLOR: warning
         ACTION_STATUS: STARTED
+        GITHUB_BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
 
     - name: Build
       run: make
@@ -88,6 +89,7 @@ jobs:
         ACTION_COLOR: good
         ACTION_STATUS: SUCCESS
         SLACK_MESSAGE_ID: ${{ steps.slack.outputs.slack_message_id }}
+        GITHUB_BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
 
     - name: Notify slack - failure
       if: failure()
@@ -98,6 +100,7 @@ jobs:
         ACTION_COLOR: danger
         ACTION_STATUS: FAILED
         SLACK_MESSAGE_ID: ${{ steps.slack.outputs.slack_message_id }}
+        GITHUB_BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
 
 
     # - name: Notify slack - failure
