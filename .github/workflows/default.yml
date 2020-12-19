@@ -16,6 +16,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Notify slack: starting
+    #   if: success()
+      id: slack
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        channel: github-actions
+        status: STARTING
+        color: warning
+
     - name: Use Node.js 14.x
       uses: actions/setup-node@v1
       with:
@@ -25,13 +36,6 @@ jobs:
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
-
-    - name: Slack Notification
-      uses: rtCamp/action-slack-notify@v2
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_USERNAME: Github Actions
-        SLACK_FOOTER:
 
     - uses: actions/cache@v2
       id: node_modules-cache
@@ -63,4 +67,26 @@ jobs:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         COVERALLS_GIT_BRANCH: ${{ steps.extract_branch.outputs.branch }}
 
+    - name: Notify slack: success
+      if: success()
+      id: slack
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        message_id: ${{ steps.slack.outputs.message_id }}
+        channel: github-actions
+        status: SUCCESS
+        color: good
 
+    - name: Notify slack: success
+      if: failure()
+      id: slack
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        message_id: ${{ steps.slack.outputs.message_id }}
+        channel: github-actions
+        status: FAILED
+        color: danger
