@@ -67,6 +67,9 @@ jobs:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         COVERALLS_GIT_BRANCH: ${{ steps.extract_branch.outputs.branch }}
 
+    - name: Send deployment notification to slack
+      run: cat logs/deploy.log
+
     - name: Notify slack - success
       if: success()
       env:

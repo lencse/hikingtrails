@@ -3,8 +3,8 @@
     functions = "functions/"
 
 [[redirects]]
-    from = "https://kektura-szakaszok.netlify.app/*"
-    to = "https://kektura-szakaszok.lencse.io/:splat"
+    from = "https://turaosvenyek.netlify.app/*"
+    to = "https://turaosvenyek.hu/:splat"
     force = true
 
 [dev]
