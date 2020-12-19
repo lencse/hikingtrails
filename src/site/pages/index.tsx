@@ -1,7 +1,7 @@
 export default function Home() {
     return (
         <div>
-            Here be dragons!
+            Here be dragons
         </div>
     )
 }
