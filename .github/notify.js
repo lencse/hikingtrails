@@ -5,7 +5,7 @@ const { resolve } = require('path')
 const { readFileSync } = require('fs')
 
 const slackToken = process.env.SLACK_BOT_TOKEN
-const slackChannel = process.env.SLACK_CHANNEL
+const slackChannelName = process.env.SLACK_CHANNEL
 const slackMessageId = process.env.SLACK_MESSAGE_ID
 
 const color = process.env.ACTION_COLOR
@@ -49,13 +49,23 @@ const getActions = {
         ]
     },
 }
-
 const main = async () => {
     const client = new WebClient(slackToken)
+    let channelId
+    const channelList = client.paginate('conversations.list', {
+        types: 'public_channel, private_channel'
+    })
+    for await (const page of channelList) {
+        const found = page.channels.find((c) => slackChannelName === c.name)
+        if (found) {
+            channelId = found.id
+        }
+    }
+
     const fn = 'STARTED' === status ? client.chat.postMessage : client.chat.update
     const ts = 'STARTED' === status ? null : slackMessageId
     const res = await fn({
-        channel: slackChannel,
+        channel: channelId,
         ts,
         attachments: [
             {
