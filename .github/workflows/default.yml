@@ -16,6 +16,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - uses: actions/cache@v2
+      id: node_modules-cache
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
+
     # - name: Notify slack - starting
     # #   if: success()
     #   id: slack
@@ -48,12 +54,6 @@ jobs:
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
-
-    - uses: actions/cache@v2
-      id: node_modules-cache
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
 
     - name: Build
       run: make
