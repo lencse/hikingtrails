@@ -33,7 +33,7 @@ const getActions = {
     ],
     'SUCCESS': () => {
         const logContent = fileContent('logs/deploy.log')
-        const url = logContent.match(/Website URL:\s*(.*)$/m)[1]
+        const url = logContent.match(/Website\s*(Draft)?\s* URL:\s*(.*)$/m)[2]
         return [
             {
                 type: 'button',
