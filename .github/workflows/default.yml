@@ -26,7 +26,7 @@ jobs:
         echo "NUMBER = $NUMBER" && \
         echo "TITLE = $TITLE" && \
         echo "BODY = $BODY"
-      if: success() && steps.findPr.outputs.number
+      if: steps.findPr.outputs.number
       env:
         PR: ${{ steps.findPr.outputs.pr }}
         NUMBER: ${{ steps.findPr.outputs.number }}
