@@ -16,6 +16,23 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - uses: jwalton/gh-find-current-pr@v1
+      id: findPr
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+    - run: |
+        echo "PR = $PR" && \
+        echo "NUMBER = $NUMBER" && \
+        echo "TITLE = $TITLE" && \
+        echo "BODY = $BODY"
+      if: success() && steps.findPr.outputs.number
+      env:
+        PR: ${{ steps.findPr.outputs.pr }}
+        NUMBER: ${{ steps.findPr.outputs.number }}
+        TITLE: ${{ steps.findPr.outputs.title }}
+        BODY: ${{ steps.findPr.outputs.body }}
+
     - uses: actions/cache@v2
       id: node_modules-cache
       with:
