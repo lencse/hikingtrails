@@ -21,18 +21,6 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
 
-    - run: |
-        echo "PR = $PR" && \
-        echo "NUMBER = $NUMBER" && \
-        echo "TITLE = $TITLE" && \
-        echo "BODY = $BODY"
-      if: steps.findPr.outputs.number
-      env:
-        PR: ${{ steps.findPr.outputs.pr }}
-        NUMBER: ${{ steps.findPr.outputs.number }}
-        TITLE: ${{ steps.findPr.outputs.title }}
-        BODY: ${{ steps.findPr.outputs.body }}
-
     - uses: actions/cache@v2
       id: node_modules-cache
       with:
@@ -51,6 +39,8 @@ jobs:
 
     - name: Install dependencies
       run: make node_modules
+
+    - run: .github/pr.js
 
     - name: Notify slack - starting
       id: slack
