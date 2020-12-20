@@ -27,6 +27,25 @@ jobs:
         path: node_modules
         key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
 
+    - run: |
+        echo "GITHUB_WORKFLOW = $GITHUB_WORKFLOW " && \
+        echo "GITHUB_RUN_ID = $GITHUB_RUN_ID " && \
+        echo "GITHUB_RUN_NUMBER = $GITHUB_RUN_NUMBER " && \
+        echo "GITHUB_ACTION = $GITHUB_ACTION " && \
+        echo "GITHUB_ACTIONS = $GITHUB_ACTIONS " && \
+        echo "GITHUB_ACTOR = $GITHUB_ACTOR " && \
+        echo "GITHUB_REPOSITORY = $GITHUB_REPOSITORY " && \
+        echo "GITHUB_EVENT_NAME = $GITHUB_EVENT_NAME " && \
+        echo "GITHUB_EVENT_PATH = $GITHUB_EVENT_PATH " && \
+        echo "GITHUB_WORKSPACE = $GITHUB_WORKSPACE " && \
+        echo "GITHUB_SHA = $GITHUB_SHA " && \
+        echo "GITHUB_REF = $GITHUB_REF " && \
+        echo "GITHUB_HEAD_REF = $GITHUB_HEAD_REF " && \
+        echo "GITHUB_BASE_REF = $GITHUB_BASE_REF " && \
+        echo "GITHUB_SERVER_URL = $GITHUB_SERVER_URL " && \
+        echo "GITHUB_API_URL = $GITHUB_API_URL " && \
+        echo "GITHUB_GRAPHQL_URL = $GITHUB_GRAPHQL_URL "
+
     - name: Extract branch name
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
@@ -40,7 +59,7 @@ jobs:
     - name: Install dependencies
       run: make node_modules
 
-    - run: .github/pr.js
+    # - run: .github/pr.js
 
     - name: Notify slack - starting
       id: slack
