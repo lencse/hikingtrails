@@ -6,6 +6,9 @@
         "build": "next build",
         "start": "next start"
     },
+    "engines": {
+        "node": "^14"
+    },
     "dependencies": {
         "@types/cheerio": "^0.22.24",
         "@types/leaflet": "^1.5.23",
