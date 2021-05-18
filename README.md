@@ -2,6 +2,12 @@
 
 ## Development
 
+### Prerequisites
+
+* [Node.js (v14 or higher)](https://nodejs.org/en/)
+* [Yarn](https://yarnpkg.com/)
+* [GNU Make](https://www.gnu.org/software/make/)
+
 ````sh
 git clone git@github.com:lencse/hikingtrails.git
 cd hikingtrails
