@@ -1,0 +1,95 @@
+name: Build, test and deploy
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  default:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/cache@v2
+      id: node_modules-cache
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+
+    - name: Use Node.js 14.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+
+    - name: Install dependencies
+      run: make node_modules
+
+    - name: Notify slack - starting
+      id: slack
+      run: echo "##[set-output name=slack_message_id;]$(.github/notify.js)"
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        SLACK_CHANNEL: github-actions
+        ACTION_COLOR: warning
+        ACTION_STATUS: STARTED
+        GITHUB_BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
+
+    - name: Build
+      run: make
+      env:
+        ANALYTICS_ENABLED: ${{ secrets.ANALYTICS_ENABLED }}
+        FATHOM_SITE_ID: ${{ secrets.FATHOM_SITE_ID }}
+        NEXT_PUBLIC_MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
+        SERVER_PREFIX: ${{ secrets.SERVER_PREFIX }}
+
+    - name: Test
+      run: make test
+
+    - name: Dependency check
+      run: make depcheck
+      
+    - name: Deploy
+      run: ./deploy.sh
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+    - name: Send coverage report
+      run: make coveralls
+      env:
+        COVERALLS_SERVICE_NAME: github-actions
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        COVERALLS_GIT_BRANCH: ${{ steps.extract_branch.outputs.branch }}
+
+    - name: Notify slack - success
+      if: success()
+      run: .github/notify.js
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        SLACK_CHANNEL: github-actions
+        ACTION_COLOR: good
+        ACTION_STATUS: SUCCESS
+        SLACK_MESSAGE_ID: ${{ steps.slack.outputs.slack_message_id }}
+        GITHUB_BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
+
+    - name: Notify slack - failure
+      if: failure()
+      run: .github/notify.js
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        SLACK_CHANNEL: github-actions
+        ACTION_COLOR: danger
+        ACTION_STATUS: FAILED
+        SLACK_MESSAGE_ID: ${{ steps.slack.outputs.slack_message_id }}
+        GITHUB_BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}

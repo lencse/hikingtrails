@@ -1,0 +1,9 @@
+{
+    "ignore": [
+        ".next",
+        "out",
+        "public",
+        "src"
+    ],
+    "ext": "js,json"
+}

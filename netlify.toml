@@ -1,0 +1,7 @@
+[build]
+    publish = "out/"
+
+[[redirects]]
+    from = "https://turaosvenyek.netlify.app/*"
+    to = "https://turaosvenyek.hu/:splat"
+    force = true
