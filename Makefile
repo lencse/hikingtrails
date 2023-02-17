@@ -12,3 +12,4 @@ node_modules: package.json yarn.lock
 out: node_modules src
 	$(BIN)/next build
 	$(BIN)/next export
+	ls -la
