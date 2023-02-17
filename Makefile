@@ -16,13 +16,15 @@ out: node_modules src
 .tmp:
 	mkdir -p .tmp
 
-.tmp/deploy.tgz: out .tmp
+#.tmp/deploy.tgz: out .tmp
+
+.tmp/deploy.tgz: .tmp
 	mkdir -p .tmp
 	yarn --frozen-lockfile --production
 	tar --exclude='.git' --exclude='.tmp' -zcf .tmp/deploy.tgz .
 
 .tmp/artifact-data.json: .tmp
-	curl -v \
+	curl \
 		-H "Accept: application/vnd.github+json" \
 		-H "Authorization: Bearer $(GH_TOKEN)" \
 		-H "X-GitHub-Api-Version: 2022-11-28" \
