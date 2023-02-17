@@ -20,7 +20,7 @@ out: node_modules src
 
 .tmp/deploy.tgz: .tmp
 	mkdir -p .tmp
-	yarn --frozen-lockfile --production
+#	yarn --frozen-lockfile --production
 	tar --exclude='.git' --exclude='.tmp' -zcf .tmp/deploy.tgz .
 
 .tmp/artifact-data.json: .tmp
