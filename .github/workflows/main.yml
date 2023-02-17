@@ -12,13 +12,17 @@ jobs:
       - name: Parse node version
         run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
         id: nvm
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js ${{ steps.nvm.outputs.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
+          cache: yarn
       - name: Build
         run: make
-      - uses: actions/upload-artifact@v3
+      - name: Create deployment
+        run: make deploy.tgz
+      - name
+        uses: actions/upload-artifact@v3
         with:
           name: deploy
-          path: .
+          path: deploy.tgz
