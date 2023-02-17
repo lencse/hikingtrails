@@ -8,7 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
       - name: Parse node version
         run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
         id: nvm
