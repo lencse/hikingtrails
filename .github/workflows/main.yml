@@ -44,7 +44,7 @@ jobs:
           git checkout --orphan deploy
           git add .
           git commit -m "Deployment for workflow $(WORKFLOW_RUN_ID)"
-          git pish origin deploy --force
+          git push origin deploy --force
 #  deploy:
 #    runs-on: ubuntu-latest
 #    needs: build
