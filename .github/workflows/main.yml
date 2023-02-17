@@ -40,6 +40,12 @@ jobs:
           path: .tmp/deploy.tgz
       - name: Store workflow run id
         run: make .workflow-run-id
+      - run: |
+          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+          git checkout --orphan deploy
+          git add .
+          git commit -m "Deployment for workflow $(WORKFLOW_RUN_ID)"
+          git pish origin deploy --force
 #  deploy:
 #    runs-on: ubuntu-latest
 #    needs: build
