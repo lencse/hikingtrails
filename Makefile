@@ -13,6 +13,7 @@ out: node_modules src
 	$(BIN)/next build
 	$(BIN)/next export
 
-deploy.tgz: out
+.tmp/deploy.tgz: out
+	mkdir -p .tmp
 	yarn --frozen-lockfile --production
-	tar --exclude='.git' -zvcf deploy.tgz .
+	tar --exclude='.git' --exclude='.tmp' -zvcf .tmp/deploy.tgz .

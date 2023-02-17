@@ -21,9 +21,9 @@ jobs:
       - name: Build
         run: make
       - name: Create deployment
-        run: make deploy.tgz
+        run: make .tmp/deploy.tgz
       - name: Upload deployment artifact
         uses: actions/upload-artifact@v3
         with:
           name: deploy
-          path: deploy.tgz
+          path: .tmp/deploy.tgz
