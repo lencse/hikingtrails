@@ -33,3 +33,6 @@ out: node_modules src
 
 .current-deployment-url.txt: .tmp/artifact-data.json
 	cat .tmp/artifact-data.json | ./get-current-deployment-url > .current-deployment-url.txt
+
+.workflow-run-id:
+	echo $(WORKFLOW_RUN_ID) > .workflow-run-id
