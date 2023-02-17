@@ -21,7 +21,7 @@ jobs:
         run: make
       - name: Create deployment
         run: make deploy.tgz
-      - name
+      - name: Upload deployment artifact
         uses: actions/upload-artifact@v3
         with:
           name: deploy
