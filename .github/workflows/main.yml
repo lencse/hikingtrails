@@ -28,9 +28,8 @@ jobs:
           name: deploy
           path: .tmp/deploy.tgz
       - name: Write deployment file url
-        uses: sergeysova/jq-action@v2
         env:
           WORKFLOW_RUN_ID: ${{ github.run_id }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        with:
+        run:
           cmd: make .current-deployment-url.txt && cat .current-deployment-url.txt

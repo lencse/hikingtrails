@@ -16,7 +16,7 @@ out: node_modules src
 .tmp/deploy.tgz: out
 	mkdir -p .tmp
 	yarn --frozen-lockfile --production
-	tar --exclude='.git' --exclude='.tmp' -zvcf .tmp/deploy.tgz .
+	tar --exclude='.git' --exclude='.tmp' -zcf .tmp/deploy.tgz .
 
 .current-deployment-url.txt:
 	curl -v \
@@ -24,6 +24,6 @@ out: node_modules src
 		-H "Authorization: Bearer $(GH_TOKEN)" \
 		-H "X-GitHub-Api-Version: 2022-11-28" \
 		https://api.github.com/repos/lencse/hikingtrails/actions/artifacts \
-	| jq -r ".artifacts | .[] | select(.workflow_run.id == $(WORKFLOW_RUN_ID)) | .archive_download_url" \
+	| ./get-current-deployment-url \
 	> .current-deployment-url.txt
 

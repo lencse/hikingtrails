@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+process.stdin.on('data', data => {
+    const url = JSON.parse(data.toString())
+      .artifacts
+      .find(artifact => artifact.workflow_run.id === Number(process.env.WORKFLOW_RUN_ID))
+      .archive_download_url
+    process.stdout.write(url)
+})
