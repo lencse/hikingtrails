@@ -36,8 +36,13 @@ jobs:
         with:
           name: deploy
           path: .tmp/deploy.tgz
+      - run: echo $WORKFLOW_RUN_ID
+        env:
+          WORKFLOW_RUN_ID: ${{ github.run_id }}
+      - run: make .tmp/artifact-data.json
+      - run: cat make .tmp/artifact-data.json
       - name: Write deployment file url
         env:
           WORKFLOW_RUN_ID: ${{ github.run_id }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: make .current-deployment-url.txt && cat .current-deployment-url.txt
+        run: make .current-deployment-url.txt ; cat .current-deployment-url.txt
