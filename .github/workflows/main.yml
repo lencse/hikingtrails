@@ -16,6 +16,9 @@ jobs:
           path: |
             ~/.npm
             ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
       - name: Parse node version
         run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
         id: nvm
