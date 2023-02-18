@@ -43,5 +43,11 @@ out: node_modules src
 	tar -xf .tmp/deploy.zip -C .tmp
 	tar -xf .tmp/deploy.tgz -C .deploy
 
+deploy: .workflow-run-id
+	git checkout --orphan deploy
+	git add .
+	git commit -m "Deployment for workflow $(WORKFLOW_RUN_ID)"
+	git push origin deploy --force
+
 .workflow-run-id:
 	echo $(WORKFLOW_RUN_ID) > .workflow-run-id
