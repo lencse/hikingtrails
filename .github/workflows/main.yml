@@ -40,7 +40,8 @@ jobs:
           path: .tmp/deploy.tgz
       - name: Store workflow run id
         run: make .workflow-run-id
-      - run: |
+      - name: Push to deploymant branch
+        run: |
           git config --global user.email "leventeloki@gmail.com"
           git config --global user.name "Levente Loki"
           make deploy

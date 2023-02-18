@@ -40,8 +40,8 @@ out: node_modules src
 
 .deploy: .tmp/deploy.zip
 	mkdir -p .deploy
-	tar -xf .tmp/deploy.zip -C .tmp
-	tar -xf .tmp/deploy.tgz -C .deploy
+	tar -xzf .tmp/deploy.zip -C .tmp
+	tar -xzf .tmp/deploy.tgz -C .deploy
 
 deploy: .workflow-run-id
 	git checkout --orphan deploy
