@@ -1,7 +1,8 @@
-.PHONY: dev test watch_test depcheck
+.PHONY: dev test depcheck format-code check-code-format verify
 
 BIN=node_modules/.bin
 NEXT=$(BIN)/next
+PRETTIER=$(BIN)/prettier
 
 default: out
 
@@ -13,8 +14,14 @@ out: node_modules src
 	$(BIN)/next build
 	$(BIN)/next export
 
-deploy:
-	git checkout --orphan deploy
-	git add .
-	git commit -m "Deployment for commit $(GITHUB_SHA)"
-	git push origin deploy --force
+format-code: node_modules
+	$(PRETTIER) --write .
+
+check-code-format: node_modules
+	$(PRETTIER) --check .
+	$(NEXT) lint
+
+depcheck: node_modules
+	$(BIN)/depcheck
+
+verify: depcheck check-code-format

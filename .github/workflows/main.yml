@@ -29,6 +29,8 @@ jobs:
           cache: yarn
       - name: Build
         run: make
+      - name: Verify
+        run: make verify
       - name: Push to deploymant branch
         run: |
           git config --global user.email "leventeloki@gmail.com"
