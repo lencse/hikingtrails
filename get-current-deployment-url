@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 
-process.stdin.on('data', data => {
-    const url = JSON.parse(data.toString())
-      .artifacts
-      .find(artifact => artifact.workflow_run.id === Number(process.env.WORKFLOW_RUN_ID))
-      .archive_download_url
-    process.stdout.write(url)
-})
+const { readFileSync } = require('fs')
+const { resolve } = require('path')
+
+const data = JSON.parse(readFileSync(resolve(__dirname, '.tmp/artifact-data.json'), 'utf8'))
+const workFlowRunId = Number(readFileSync(resolve(__dirname, '.workflow-run-id'), 'utf8'))
+
+const url = data.artifacts
+  .find(artifact => artifact.workflow_run.id === workFlowRunId)
+  .archive_download_url
+process.stdout.write(url)

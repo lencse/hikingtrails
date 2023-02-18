@@ -29,8 +29,8 @@ jobs:
         with:
           node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
           cache: yarn
-#      - name: Build
-#        run: make
+      - name: Build
+        run: make
       - name: Create deployment
         run: make .tmp/deploy.tgz
       - name: Upload deployment artifact
@@ -43,10 +43,7 @@ jobs:
       - run: |
           git config --global user.email "leventeloki@gmail.com"
           git config --global user.name "Levente Loki"
-          git checkout --orphan deploy
-          git add .
-          git commit -m "Deployment for workflow $(WORKFLOW_RUN_ID)"
-          git push origin deploy --force
+          make deploy
 #  deploy:
 #    runs-on: ubuntu-latest
 #    needs: build

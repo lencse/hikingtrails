@@ -16,11 +16,10 @@ out: node_modules src
 .tmp:
 	mkdir -p .tmp
 
-#.tmp/deploy.tgz: out .tmp
 
-.tmp/deploy.tgz: .tmp
+.tmp/deploy.tgz: out .tmp
 	mkdir -p .tmp
-#	yarn --frozen-lockfile --production
+	yarn --frozen-lockfile --production
 	tar --exclude='.git' --exclude='.tmp' -zcf .tmp/deploy.tgz .
 
 .tmp/artifact-data.json: .tmp
@@ -31,8 +30,18 @@ out: node_modules src
 		https://api.github.com/repos/lencse/hikingtrails/actions/artifacts \
 	> .tmp/artifact-data.json
 
-.current-deployment-url.txt: .tmp/artifact-data.json
-	cat .tmp/artifact-data.json | ./get-current-deployment-url > .current-deployment-url.txt
+.tmp/deploy.zip: .tmp .tmp/artifact-data.json .workflow-run-id
+	wget \
+		--header="Accept: application/vnd.github+json" \
+		--header="Authorization: Bearer $(GH_TOKEN)" \
+		--header="X-GitHub-Api-Version: 2022-11-28" \
+		-O .tmp/deploy.zip \
+		`./get-current-deployment-url`
+
+.deploy: .tmp/deploy.zip
+	mkdir -p .deploy
+	tar -xf .tmp/deploy.zip -C .tmp
+	tar -xf .tmp/deploy.tgz -C .deploy
 
 .workflow-run-id:
 	echo $(WORKFLOW_RUN_ID) > .workflow-run-id
