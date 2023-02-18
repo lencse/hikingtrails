@@ -19,8 +19,8 @@ jobs:
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
-      - name: Use node version
-        run: echo NODE_VERSION=`cat .nvmrc`
+      - name: Parse node version
+        run: echo NODE_VERSION=`cat .nvmrc` >> $GITHUB_OUTPUT
         id: nvm
       - name: Use Node.js ${{ steps.nvm.outputs.NODE_VERSION }}
         uses: actions/setup-node@v3
