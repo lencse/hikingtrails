@@ -24,4 +24,7 @@ check-code-format: node_modules
 depcheck: node_modules
 	$(BIN)/depcheck
 
-verify: depcheck check-code-format
+verify: check-code-format test
+
+test: node_modules
+	$(BIN)/jest
